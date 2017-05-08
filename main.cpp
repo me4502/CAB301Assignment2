@@ -55,10 +55,10 @@ std::vector<int> generateArray(unsigned long n, TEST_TYPE type) {
         case RANDOMIZED:
             std::mt19937 rng;
             rng.seed(std::random_device()());
-            std::uniform_int_distribution<std::mt19937::result_type> distribution(0, INT_MAX);
+            std::uniform_int_distribution<std::mt19937::result_type> distribution(0, n);
 
             for (int i = 0; i < n; i++) {
-                generatedArray[i] = (int) (distribution(rng) % n);
+                generatedArray[i] = (int) (distribution(rng));
             }
             break;
     }
