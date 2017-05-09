@@ -9,6 +9,10 @@
 unsigned long long operationCount = 0;
 #endif
 
+int minDistance(std::vector<int> &input) {
+    return 0;
+}
+
 int minDistance2(std::vector<int> &input) {
     // Set dmin to a 'infinity' In this case the maximum integer value is being used, due to a lack of 'inf' type.
     int dmin = INT_MAX;
@@ -74,7 +78,7 @@ void runMethod(std::vector<int> &testVector, int methodNumber) {
 
     switch (methodNumber) {
         case 1:
-            //output = minDistance2(testVector);
+            output = minDistance(testVector);
             break;
         case 2:
             output = minDistance2(testVector);
