@@ -16,6 +16,9 @@ int minDistance(std::vector<int> &input) {
     int dmin = INT_MAX;
     for (size_t i = 0; i < input.size(); i++) {
         for (size_t j = 0; j < input.size(); j++) {
+#ifdef OPERATIONS
+            operationCount ++;
+#endif
             const int difference = abs(input[i] - input[j]);
             if ((i != j) and (difference < dmin)) {
                 dmin = difference;
@@ -34,7 +37,7 @@ int minDistance2(std::vector<int> &input) {
 #ifdef OPERATIONS
             operationCount ++;
 #endif
-            int temp = abs(input[i] - input[j]);
+            const int temp = abs(input[i] - input[j]);
             if (temp < dmin) {
                 dmin = temp;
             }
