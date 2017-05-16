@@ -37,3 +37,9 @@ fabric.properties
 # Custom
 cmake-build-debug/
 *.csv
+
+Assignment
+Assignment_Logging
+Assignment_Operations
+Assignment_Testing
+Assignment_Timings

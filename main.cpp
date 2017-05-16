@@ -13,15 +13,24 @@ unsigned long long operationCount = 0;
 #endif
 
 int minDistance(std::vector<int> &input) {
-    return 0;
+    int dmin = INT_MAX;
+    for (size_t i = 0; i < input.size(); i++) {
+        for (size_t j = 0; j < input.size(); j++) {
+            const int difference = abs(input[i] - input[j]);
+            if ((i != j) and (difference < dmin)) {
+                dmin = difference;
+            }
+        }
+    }
+    return dmin;
 }
 
 int minDistance2(std::vector<int> &input) {
     // Set dmin to a 'infinity' In this case the maximum integer value is being used, due to a lack of 'inf' type.
     int dmin = INT_MAX;
 
-    for (int i = 0; i < input.size() - 1; i++) {
-        for (int j = i + 1; j < input.size(); j++) {
+    for (size_t i = 0; i < input.size() - 1; i++) {
+        for (size_t j = i + 1; j < input.size(); j++) {
 #ifdef OPERATIONS
             operationCount ++;
 #endif
@@ -49,25 +58,25 @@ std::vector<int> generateArray(unsigned long n, TEST_TYPE type) {
 
     // Fill the array.
     switch (type) {
-        case SORTED:
-            for (int i = 0; i < n; i++) {
-                generatedArray[i] = i;
-            }
-            break;
-        case REVERSED:
-            for (int i = 0; i < n; i++) {
-                generatedArray[i] = (int) (n - i - 1);
-            }
-            break;
-        case RANDOMIZED:
-            std::mt19937 rng;
-            rng.seed(std::random_device()());
-            std::uniform_int_distribution<std::mt19937::result_type> distribution(0, n);
+    case SORTED:
+        for (size_t i = 0; i < n; i++) {
+            generatedArray[i] = i;
+        }
+        break;
+    case REVERSED:
+        for (size_t i = 0; i < n; i++) {
+            generatedArray[i] = (int) (n - i - 1);
+        }
+        break;
+    case RANDOMIZED:
+        std::mt19937 rng;
+        rng.seed(std::random_device()());
+        std::uniform_int_distribution<std::mt19937::result_type> distribution(0, n);
 
-            for (int i = 0; i < n; i++) {
-                generatedArray[i] = (int) (distribution(rng));
-            }
-            break;
+        for (size_t i = 0; i < n; i++) {
+            generatedArray[i] = (int) (distribution(rng));
+        }
+        break;
     }
 
     return generatedArray;
@@ -80,14 +89,14 @@ int runMethod(std::vector<int> &testVector, int methodNumber) {
     int output = 0;
 
     switch (methodNumber) {
-        case 1:
-            output = minDistance(testVector);
-            break;
-        case 2:
-            output = minDistance2(testVector);
-            break;
-        default:
-            break;
+    case 1:
+        output = minDistance(testVector);
+        break;
+    case 2:
+        output = minDistance2(testVector);
+        break;
+    default:
+        break;
     }
 #ifdef OPERATIONS
 #elif TIMING
@@ -131,16 +140,17 @@ int main() {
     csvExporter.open("timings.csv");
     for (int k = TEST_TYPE::SORTED; k <= TEST_TYPE::RANDOMIZED; k++) {
         switch(k) {
-            case TEST_TYPE::SORTED:
-                csvExporter << "SORTED,time" << std::endl;
-                break;
-            case TEST_TYPE::REVERSED:
-                csvExporter << "REVERSED,time" << std::endl;
-                break;
-            case TEST_TYPE::RANDOMIZED:
-                csvExporter << "RANDOMIZED,time" << std::endl;
-                break;
-            default:break;
+        case TEST_TYPE::SORTED:
+            csvExporter << "SORTED,time" << std::endl;
+            break;
+        case TEST_TYPE::REVERSED:
+            csvExporter << "REVERSED,time" << std::endl;
+            break;
+        case TEST_TYPE::RANDOMIZED:
+            csvExporter << "RANDOMIZED,time" << std::endl;
+            break;
+        default:
+            break;
         }
         for (int i = 1; i <= 10000; i += (10000 * TEST_COUNT) / (255)) {
             for (int j = 0; j < TEST_COUNT; j++) {
@@ -187,12 +197,24 @@ int main() {
 #ifdef TEST
     std::cout << "== Test ==" << std::endl;
     std::vector<std::tuple<std::vector<int>, int>> tests(6);
-    tests[0] = std::make_tuple((std::vector<int>) {10, 9, 8, 7, 6, 5, 4, 3, 2, 1}, 1);
-    tests[1] = std::make_tuple((std::vector<int>) {0, 50, 101}, 50);
-    tests[2] = std::make_tuple((std::vector<int>) {0, 51, 101}, 50);
-    tests[3] = std::make_tuple((std::vector<int>) {1000, 0, 492}, 492);
-    tests[4] = std::make_tuple((std::vector<int>) {0, 0, 9}, 0);
-    tests[5] = std::make_tuple((std::vector<int>) {-902, 19, 901}, 882);
+    tests[0] = std::make_tuple((std::vector<int>) {
+        10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+    }, 1);
+    tests[1] = std::make_tuple((std::vector<int>) {
+        0, 50, 101
+    }, 50);
+    tests[2] = std::make_tuple((std::vector<int>) {
+        0, 51, 101
+    }, 50);
+    tests[3] = std::make_tuple((std::vector<int>) {
+        1000, 0, 492
+    }, 492);
+    tests[4] = std::make_tuple((std::vector<int>) {
+        0, 0, 9
+    }, 0);
+    tests[5] = std::make_tuple((std::vector<int>) {
+        -902, 19, 901
+    }, 882);
     int result;
 
     for (auto &test : tests) {
