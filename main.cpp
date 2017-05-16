@@ -4,6 +4,9 @@
 #include <random>
 #include <fstream>
 #include <ctime>
+#include <tuple>
+#include <iterator>
+#include <sstream>
 
 #ifdef OPERATIONS
 unsigned long long operationCount = 0;
@@ -18,11 +21,11 @@ int minDistance2(std::vector<int> &input) {
     int dmin = INT_MAX;
 
     for (int i = 0; i < input.size() - 1; i++) {
-        for (int j = i + i; j < input.size(); j++) {
+        for (int j = i + 1; j < input.size(); j++) {
 #ifdef OPERATIONS
             operationCount ++;
 #endif
-            int temp = input[i] - input[j];
+            int temp = abs(input[i] - input[j]);
             if (temp < dmin) {
                 dmin = temp;
             }
@@ -70,7 +73,7 @@ std::vector<int> generateArray(unsigned long n, TEST_TYPE type) {
     return generatedArray;
 }
 
-void runMethod(std::vector<int> &testVector, int methodNumber) {
+int runMethod(std::vector<int> &testVector, int methodNumber) {
 #ifdef OPERATIONS
     operationCount = 0;
 #endif
@@ -86,20 +89,19 @@ void runMethod(std::vector<int> &testVector, int methodNumber) {
         default:
             break;
     }
-#ifdef TEST
-    // TODO Write Test Case
-#elif LOGGING
-#elif OPERATIONS
+#ifdef OPERATIONS
 #elif TIMING
+#elif TEST
 #else
     std::cout << "Test Output: " << output << std::endl;
 #endif
+    return output;
 }
 
 std::vector<unsigned long> testCases = {10, 100, 1000, 10000};
 
 #ifdef TEST
-#define TEST_COUNT 1
+#define TEST_COUNT 5
 #elif TIMING
 #define TEST_COUNT 10
 #elif OPERATIONS
@@ -183,14 +185,39 @@ int main() {
 #endif
 
 #ifdef TEST
-    std::cout << "== Random Length Random Test ==" << std::endl;
-    std::mt19937 rng;
-    rng.seed(std::random_device()());
-    std::uniform_int_distribution<std::mt19937::result_type> distribution(0, 100);
-    for (int i = 0; i < 50; i++) {
-        testVector = generateArray((unsigned long) distribution(rng), TEST_TYPE::RANDOMIZED);
-        runMethod(testVector, 1);
-        runMethod(testVector, 2);
+    std::cout << "== Test ==" << std::endl;
+    std::vector<std::tuple<std::vector<int>, int>> tests(6);
+    tests[0] = std::make_tuple((std::vector<int>) {10, 9, 8, 7, 6, 5, 4, 3, 2, 1}, 1);
+    tests[1] = std::make_tuple((std::vector<int>) {0, 50, 101}, 50);
+    tests[2] = std::make_tuple((std::vector<int>) {0, 51, 101}, 50);
+    tests[3] = std::make_tuple((std::vector<int>) {1000, 0, 492}, 492);
+    tests[4] = std::make_tuple((std::vector<int>) {0, 0, 9}, 0);
+    tests[5] = std::make_tuple((std::vector<int>) {-902, 19, 901}, 882);
+    int result;
+
+    for (auto &test : tests) {
+        testVector = std::get<0>(test);
+
+        std::ostringstream testVectorString;
+        testVectorString << "[";
+        std::copy(testVector.begin(), testVector.end()-1, std::ostream_iterator<int>(testVectorString, ","));
+        testVectorString << testVector.back() << "]";
+
+        int correctAnswer = std::get<1>(test);
+        result = runMethod(testVector, 1);
+        if (result != correctAnswer) {
+            std::cout << "Test: " << testVectorString.str() << " Failed on Method 1! Got "
+                      << result << " but expected " << correctAnswer << std::endl;
+        } else {
+            std::cout << "Test: " << testVectorString.str() << " Passed on Method 1!" << std::endl;
+        }
+        result = runMethod(testVector, 2);
+        if (result != correctAnswer) {
+            std::cout << "Test: " << testVectorString.str() << " Failed on Method 2! Got "
+                      << result << " but expected " << correctAnswer << std::endl;
+        } else {
+            std::cout << "Test: " << testVectorString.str() << " Passed on Method 2!" << std::endl;
+        }
     }
 #endif
 
