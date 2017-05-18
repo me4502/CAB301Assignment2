@@ -17,11 +17,15 @@ int minDistance(std::vector<int> &input) {
     for (size_t i = 0; i < input.size(); i++) {
         for (size_t j = 0; j < input.size(); j++) {
 #ifdef OPERATIONS
-            operationCount ++;
+            if (i != j) {
+                operationCount ++;
+            }
 #endif
-            const int difference = abs(input[i] - input[j]);
-            if ((i != j) and (difference < dmin)) {
-                dmin = difference;
+            if (i != j and abs(input[i] - input[j]) < dmin) {
+#ifdef OPERATIONS
+                operationCount ++;
+#endif
+                dmin = abs(input[i] - input[j]);
             }
         }
     }
