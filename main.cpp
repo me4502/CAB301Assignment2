@@ -57,7 +57,7 @@ enum TEST_TYPE {
     RANDOMIZED = 2
 };
 
-std::vector<int> generateArray(unsigned long n, TEST_TYPE type) {
+std::vector<int> generateArray(unsigned int n, TEST_TYPE type) {
     if (n <= 0) {
         n = 1;
     }
@@ -67,7 +67,7 @@ std::vector<int> generateArray(unsigned long n, TEST_TYPE type) {
     switch (type) {
     case SORTED:
         for (size_t i = 0; i < n; i++) {
-            generatedArray[i] = i;
+            generatedArray[i] = (int) i;
         }
         break;
     case REVERSED:
@@ -114,7 +114,7 @@ int runMethod(std::vector<int> &testVector, int methodNumber) {
     return output;
 }
 
-std::vector<unsigned long> testCases = {10, 100, 1000, 10000};
+unsigned int testCases[] = {10, 100, 1000, 10000};
 
 #ifdef TEST
 #define TEST_COUNT 5
@@ -177,7 +177,7 @@ int main() {
 #else
     std::cout << "== Sorted Test ==" << std::endl;
     for (int n = 0; n < TEST_COUNT; n++) {
-        for (unsigned long testCase : testCases) {
+        for (unsigned int testCase : testCases) {
             testVector = generateArray(testCase, TEST_TYPE::SORTED);
             runMethod(testVector, 1);
             runMethod(testVector, 2);
@@ -185,7 +185,7 @@ int main() {
     }
     std::cout << "== Reversed Test ==" << std::endl;
     for (int n = 0; n < TEST_COUNT; n++) {
-        for (unsigned long testCase : testCases) {
+        for (unsigned int testCase : testCases) {
             testVector = generateArray(testCase, TEST_TYPE::REVERSED);
             runMethod(testVector, 1);
             runMethod(testVector, 2);
@@ -193,7 +193,7 @@ int main() {
     }
     std::cout << "== Random Test ==" << std::endl;
     for (int n = 0; n < TEST_COUNT; n++) {
-        for (unsigned long testCase : testCases) {
+        for (unsigned int testCase : testCases) {
             testVector = generateArray(testCase, TEST_TYPE::RANDOMIZED);
             runMethod(testVector, 1);
             runMethod(testVector, 2);
