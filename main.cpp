@@ -203,7 +203,7 @@ int main() {
             2, 0
     }, 2);
     tests[8] = std::make_tuple((std::vector<int>) {
-            2, 0, 20, 200
+            2, 0, 20, INT_MAX
     }, 2);
     tests[9] = std::make_tuple((std::vector<int>) {
             -10, -5, -15, -2
