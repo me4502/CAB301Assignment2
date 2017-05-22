@@ -33,7 +33,8 @@ int minDistance(std::vector<int> &input) {
 }
 
 int minDistance2(std::vector<int> &input) {
-    // Set dmin to a 'infinity' In this case the maximum integer value is being used, due to a lack of 'inf' type.
+    // Set dmin to a 'infinity' In this case the maximum integer value is being used,
+    // due to a lack of 'inf' type.
     int dmin = INT_MAX;
 
     for (size_t i = 0; i < input.size() - 1; i++) {
