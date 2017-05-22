@@ -175,6 +175,65 @@ int main() {
         }
     }
     csvExporter.close();
+#elif TEST
+    std::cout << "== Test ==" << std::endl;
+    std::vector<std::tuple<std::vector<int>, int>> tests(10);
+    tests[0] = std::make_tuple((std::vector<int>) {
+        10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+    }, 1);
+    tests[1] = std::make_tuple((std::vector<int>) {
+        0, 50, 101
+    }, 50);
+    tests[2] = std::make_tuple((std::vector<int>) {
+        0, 51, 101
+    }, 50);
+    tests[3] = std::make_tuple((std::vector<int>) {
+        1000, 0, 492
+    }, 492);
+    tests[4] = std::make_tuple((std::vector<int>) {
+        0, 0, 9
+    }, 0);
+    tests[5] = std::make_tuple((std::vector<int>) {
+        -902, 19, 901
+    }, 882);
+    tests[6] = std::make_tuple((std::vector<int>) {
+            0
+    }, INT_MAX);
+    tests[7] = std::make_tuple((std::vector<int>) {
+            2, 0
+    }, 2);
+    tests[8] = std::make_tuple((std::vector<int>) {
+            2, 0, 20, 200
+    }, 2);
+    tests[9] = std::make_tuple((std::vector<int>) {
+            -10, -5, -15, -2
+    }, 3);
+    int result;
+
+    for (auto &test : tests) {
+        testVector = std::get<0>(test);
+
+        std::ostringstream testVectorString;
+        testVectorString << "[";
+        std::copy(testVector.begin(), testVector.end()-1, std::ostream_iterator<int>(testVectorString, ","));
+        testVectorString << testVector.back() << "]";
+
+        int correctAnswer = std::get<1>(test);
+        result = runMethod(testVector, 1);
+        if (result != correctAnswer) {
+            std::cout << "Test: " << testVectorString.str() << " Failed on Method 1! Got "
+                      << result << " but expected " << correctAnswer << std::endl;
+        } else {
+            std::cout << "Test: " << testVectorString.str() << " Passed (Got " << result << ") on Method 1!" << std::endl;
+        }
+        result = runMethod(testVector, 2);
+        if (result != correctAnswer) {
+            std::cout << "Test: " << testVectorString.str() << " Failed on Method 2! Got "
+                      << result << " but expected " << correctAnswer << std::endl;
+        } else {
+            std::cout << "Test: " << testVectorString.str() << " Passed (Got " << result << ") on Method 2!" << std::endl;
+        }
+    }
 #else
     std::cout << "== Sorted Test ==" << std::endl;
     for (int n = 0; n < TEST_COUNT; n++) {
@@ -198,55 +257,6 @@ int main() {
             testVector = generateArray(testCase, TEST_TYPE::RANDOMIZED);
             runMethod(testVector, 1);
             runMethod(testVector, 2);
-        }
-    }
-#endif
-
-#ifdef TEST
-    std::cout << "== Test ==" << std::endl;
-    std::vector<std::tuple<std::vector<int>, int>> tests(6);
-    tests[0] = std::make_tuple((std::vector<int>) {
-        10, 9, 8, 7, 6, 5, 4, 3, 2, 1
-    }, 1);
-    tests[1] = std::make_tuple((std::vector<int>) {
-        0, 50, 101
-    }, 50);
-    tests[2] = std::make_tuple((std::vector<int>) {
-        0, 51, 101
-    }, 50);
-    tests[3] = std::make_tuple((std::vector<int>) {
-        1000, 0, 492
-    }, 492);
-    tests[4] = std::make_tuple((std::vector<int>) {
-        0, 0, 9
-    }, 0);
-    tests[5] = std::make_tuple((std::vector<int>) {
-        -902, 19, 901
-    }, 882);
-    int result;
-
-    for (auto &test : tests) {
-        testVector = std::get<0>(test);
-
-        std::ostringstream testVectorString;
-        testVectorString << "[";
-        std::copy(testVector.begin(), testVector.end()-1, std::ostream_iterator<int>(testVectorString, ","));
-        testVectorString << testVector.back() << "]";
-
-        int correctAnswer = std::get<1>(test);
-        result = runMethod(testVector, 1);
-        if (result != correctAnswer) {
-            std::cout << "Test: " << testVectorString.str() << " Failed on Method 1! Got "
-                      << result << " but expected " << correctAnswer << std::endl;
-        } else {
-            std::cout << "Test: " << testVectorString.str() << " Passed on Method 1!" << std::endl;
-        }
-        result = runMethod(testVector, 2);
-        if (result != correctAnswer) {
-            std::cout << "Test: " << testVectorString.str() << " Failed on Method 2! Got "
-                      << result << " but expected " << correctAnswer << std::endl;
-        } else {
-            std::cout << "Test: " << testVectorString.str() << " Passed on Method 2!" << std::endl;
         }
     }
 #endif
