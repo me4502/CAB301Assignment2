@@ -162,7 +162,7 @@ int main() {
         }
         for (int i = 1; i <= 10000; i += (10000 * TEST_COUNT) / (255)) {
             for (int j = 0; j < TEST_COUNT; j++) {
-                testVector = generateArray((unsigned long) i, (TEST_TYPE) k);
+                testVector = generateArray((unsigned int) i, (TEST_TYPE) k);
                 clock_t start = clock();
                 runMethod(testVector, 1);
                 double duration = (std::clock() - start) / (CLOCKS_PER_SEC / 1000.0);
